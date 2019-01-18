@@ -1,0 +1,6 @@
+[submodule "src/submodules/mymonero-libapp-cpp"]
+	path = src/submodules/mymonero-libapp-cpp
+	url = https://github.com/mymonero/mymonero-libapp-cpp
+[submodule "mymonero-core-js"]
+	path = mymonero-core-js
+	url = git@github.com:mymonero/mymonero-core-js.git
