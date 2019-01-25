@@ -11,6 +11,7 @@ include_directories("src")
 set(MYMONERO_LIBAPP_CPP "src/submodules/mymonero-libapp-cpp")
 set(MYMONERO_LIBAPP_CPP_SRC "${MYMONERO_LIBAPP_CPP}/src")
 include_directories("${MYMONERO_LIBAPP_CPP_SRC}")
+include_directories("${MYMONERO_LIBAPP_CPP_SRC}/SendFunds/Controllers")
 #
 set(MYMONERO_CORE_CPP "${MYMONERO_LIBAPP_CPP_SRC}/mymonero-core-cpp")
 set(MYMONERO_CORE_CPP_SRC "${MYMONERO_CORE_CPP}/src")
@@ -40,8 +41,8 @@ set(
     #
     src/index.cpp
     #
-    ${MYMONERO_CORE_CPP_SRC}/emscr_async_send_bridge.hpp
-    ${MYMONERO_CORE_CPP_SRC}/emscr_async_send_bridge.cpp
+    src/emscr_SendFunds_bridge.hpp
+    src/emscr_SendFunds_bridge.cpp
     #
     ${MYMONERO_CORE_CPP_SRC}/monero_address_utils.hpp
     ${MYMONERO_CORE_CPP_SRC}/monero_address_utils.cpp
@@ -65,6 +66,9 @@ set(
     ${MYMONERO_CORE_CPP_SRC}/serial_bridge_utils.cpp
     ${MYMONERO_CORE_CPP_SRC}/tools__ret_vals.hpp
     ${MYMONERO_CORE_CPP_SRC}/tools__ret_vals.cpp
+    #
+    ${MYMONERO_LIBAPP_CPP_SRC}/SendFunds/Controllers/SendFundsFormSubmissionController.hpp
+    ${MYMONERO_LIBAPP_CPP_SRC}/SendFunds/Controllers/SendFundsFormSubmissionController.cpp
     #
     ${MONERO_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
     ${MONERO_SRC}/cryptonote_basic/account.cpp

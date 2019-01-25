@@ -1,0 +1,47 @@
+{
+  "name": "mymonero-libapp-js",
+  "version": "1.0.0",
+  "description": "The JS library containing the JS transpilation of the shared library behind the MyMonero apps",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mymonero/mymonero-libapp-js.git"
+  },
+  "scripts": {
+    "format": "find . -name '*.js*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "test": "mocha"
+  },
+  "keywords": [
+    "monero",
+    "mymonero",
+    "javascript",
+    "js",
+    "lightweight",
+    "lightwallet",
+    "wallet",
+    "crypto",
+    "script",
+    "utility",
+    "tool"
+  ],
+  "author": "MyMonero",
+  "license": "See LICENSE.TXT. Copyright (c) 2014-2019, MyMonero.com. All rights reserved.",
+  "bugs": {
+    "url": "https://github.com/mymonero/mymonero-libapp-js/issues"
+  },
+  "homepage": "https://github.com/mymonero/mymonero-libapp-js#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "5.2.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "monero_utils/MyMoneroLibAppCpp_WASM.js",
+      "monero_utils/MyMoneroLibAppCpp_ASMJS.js",
+      "monero_utils/MyMoneroLibAppCpp_ASMJS.asm.js"
+    ]
+  }
+}

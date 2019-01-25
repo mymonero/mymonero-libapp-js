@@ -33,14 +33,14 @@
 #include <emscripten/bind.h>
 //
 #include "serial_bridge_index.hpp"
-#include "emscr_async_send_bridge.hpp"
+#include "emscr_SendFunds_bridge.hpp"
 //
 EMSCRIPTEN_BINDINGS(my_module)
 { // C++ -> JS 
-    emscripten::function("send_funds", &emscr_async_bridge::send_funds);
-    emscripten::function("send_cb_I__got_unspent_outs", &emscr_async_bridge::send_cb_I__got_unspent_outs);
-    emscripten::function("send_cb_II__got_random_outs", &emscr_async_bridge::send_cb_II__got_random_outs);
-    emscripten::function("send_cb_III__submitted_tx", &emscr_async_bridge::send_cb_III__submitted_tx);
+    // emscripten::function("send_funds", &emscr_async_bridge::send_funds);
+    // emscripten::function("send_cb_I__got_unspent_outs", &emscr_async_bridge::send_cb_I__got_unspent_outs);
+    // emscripten::function("send_cb_II__got_random_outs", &emscr_async_bridge::send_cb_II__got_random_outs);
+    // emscripten::function("send_cb_III__submitted_tx", &emscr_async_bridge::send_cb_III__submitted_tx);
     //
     emscripten::function("decode_address", &serial_bridge::decode_address);
     emscripten::function("is_subaddress", &serial_bridge::is_subaddress);
@@ -57,7 +57,7 @@ EMSCRIPTEN_BINDINGS(my_module)
     emscripten::function("address_and_keys_from_seed", &serial_bridge::address_and_keys_from_seed);
     //
     emscripten::function("estimated_tx_network_fee", &serial_bridge::estimated_tx_network_fee);
-    emscripten::function("estimate_rct_tx_size", &serial_bridge::estimate_rct_tx_size);
+    // emscripten::function("estimate_rct_tx_size", &serial_bridge::estimate_rct_tx_size);
     //
     emscripten::function("generate_key_image", &serial_bridge::generate_key_image);
     // emscripten::function("generate_key_derivation", &serial_bridge::generate_key_derivation);
@@ -67,6 +67,13 @@ EMSCRIPTEN_BINDINGS(my_module)
     // emscripten::function("decodeRctSimple", &serial_bridge::decodeRctSimple);
     // emscripten::function("derivation_to_scalar", &serial_bridge::derivation_to_scalar);
     // emscripten::function("encrypt_payment_id", &serial_bridge::encrypt_payment_id);
+    //
+    //
+    emscripten::function("send_funds", &emscr_SendFunds_bridge::send_funds);
+    emscripten::function("send_cb_I__got_unspent_outs", &emscr_SendFunds_bridge::send_cb_I__got_unspent_outs);
+    emscripten::function("send_cb_II__got_random_outs", &emscr_SendFunds_bridge::send_cb_II__got_random_outs);
+    emscripten::function("send_cb_III__submitted_tx", &emscr_SendFunds_bridge::send_cb_III__submitted_tx);
+
     
 }
 extern "C"
