@@ -51,6 +51,7 @@ namespace emscr_SendFunds_bridge
 	//
 	// Public interface:
 	void send_funds(const string &args_string);
+	void send_cb__authentication(const string &args_string);
 	void send_cb_I__got_unspent_outs(const string &args_string);
 	void send_cb_II__got_random_outs(const string &args_string);
 	void send_cb_III__submitted_tx(const string &args_string);

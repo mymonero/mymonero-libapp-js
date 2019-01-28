@@ -164,13 +164,15 @@ void emscr_SendFunds_bridge::send_funds(const string &args_string)
 		json_root.get<bool>("fromWallet_didFailToBoot"),
 		json_root.get<bool>("fromWallet_needsImport"),
 		//
+		json_root.get<bool>("requireAuthentication"),
+		//
 		json_root.get<string>("sending_amount_double_string"),
 		json_root.get<bool>("is_sweeping"),
 		(uint32_t)stoul(json_root.get<string>("priority")),
 		//
 		json_root.get<bool>("hasPickedAContact"),
 		json_root.get_optional<string>("contact_payment_id"),
-		json_root.get<bool>("contact_hasOpenAliasAddress"),
+		json_root.get_optional<bool>("contact_hasOpenAliasAddress"),
 		json_root.get_optional<string>("cached_OAResolved_address"),
 		json_root.get_optional<string>("contact_address"),
 		//
@@ -233,6 +235,16 @@ void emscr_SendFunds_bridge::send_funds(const string &args_string)
 		send_app_handler__error_msg("Out of memory (heap vals container)");
 		return;
 	}
+	(*controller_ptr).set__authenticate_fn(
+		[] () -> void
+		{ // authenticate_fn - this is not guaranteed to be called but it will be if requireAuthentication is true
+			EM_ASM_(
+				{
+					Module.fromCpp__SendFundsFormSubmission__authenticate(); // Module must implement this!
+				}
+			);
+		}
+	);
 	(*controller_ptr).set__get_unspent_outs_fn([] (LightwalletAPI_Req_GetUnspentOuts req_params) -> void
 	{ // get_unspent_outs
 		boost::property_tree::ptree req_params_root;
@@ -298,6 +310,20 @@ void emscr_SendFunds_bridge::send_funds(const string &args_string)
 	(*controller_ptr).handle();
 }
 //
+void emscr_SendFunds_bridge::send_cb__authentication(const string &args_string)
+{
+	boost::property_tree::ptree json_root;
+	if (!parsed_json_root(args_string, json_root)) {
+		// (it will already have thrown an exception)
+		send_app_handler__error_msg(error_ret_json_from_message("Invalid JSON"));
+		return;
+	}
+	auto did_pass = json_root.get<bool>("did_pass");
+	if (!controller_ptr) { // an error will have been returned already - just bail.
+		return;
+	}
+	(*controller_ptr).cb__authentication(did_pass);
+}
 void emscr_SendFunds_bridge::send_cb_I__got_unspent_outs(const string &args_string)
 {
 	boost::property_tree::ptree json_root;

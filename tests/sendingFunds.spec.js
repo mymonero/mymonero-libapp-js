@@ -197,6 +197,9 @@ describe("sendingFunds tests", function()
 			fromWallet_didFailToInitialize: false,
 			fromWallet_didFailToBoot: false,
 			fromWallet_needsImport: false,
+			//
+			requireAuthentication: true,
+			//
 			sending_amount_double_string: entered_amount,
 			hasPickedAContact: false,
 			resolvedAddress_fieldIsVisible: false,
@@ -206,7 +209,7 @@ describe("sendingFunds tests", function()
 			contact_payment_id: null,
 			cached_OAResolved_address: null,
 			contact_address: null,
-			contact_hasOpenAliasAddress: false,
+			contact_hasOpenAliasAddress: null,
 			resolvedPaymentID: null,
 			resolvedAddress: null,
 
@@ -256,6 +259,11 @@ describe("sendingFunds tests", function()
 			canceled_fn: function()
 			{
 				console.log("Canceled")
+			},
+			authenticate_fn: function(cb)
+			{
+				console.log("Simulating good authentication")
+				cb(true)
 			},
 			error_fn: function(params)
 			{

@@ -70,6 +70,7 @@ EMSCRIPTEN_BINDINGS(my_module)
     //
     //
     emscripten::function("send_funds", &emscr_SendFunds_bridge::send_funds);
+    emscripten::function("send_cb__authentication", &emscr_SendFunds_bridge::send_cb__authentication);
     emscripten::function("send_cb_I__got_unspent_outs", &emscr_SendFunds_bridge::send_cb_I__got_unspent_outs);
     emscripten::function("send_cb_II__got_random_outs", &emscr_SendFunds_bridge::send_cb_II__got_random_outs);
     emscripten::function("send_cb_III__submitted_tx", &emscr_SendFunds_bridge::send_cb_III__submitted_tx);

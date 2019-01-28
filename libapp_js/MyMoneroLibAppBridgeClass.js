@@ -76,6 +76,10 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		{
 			self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__canceled"]();
 		}
+		self.Module.fromCpp__SendFundsFormSubmission__authenticate = function()
+		{
+			self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__authenticate"]();
+		}
 	}
 	__new_cb_args_with_no_task_id(err_msg, res)
 	{
@@ -142,6 +146,14 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 			fn_args.canceled_fn(params);
 			self._cb_handlers__SendFundsFormSubmission = null // reset so we can enter process again
 		};
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__authenticate"] = function()
+		{
+			fn_args.authenticate_fn(function(did_pass)
+			{
+				const payload = { did_pass: did_pass };
+				self.Module.send_cb__authentication(JSON.stringify(payload))
+			});
+		};
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__willBeginSending"] = function(params)
 		{
 			fn_args.willBeginSending_fn(params);
@@ -149,7 +161,6 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__success"] = function(params)
 		{
 			params.mixin = parseInt(params.mixin)
-			console.log("params.isXMRAddressIntegrated", params.isXMRAddressIntegrated)
 			params.isXMRAddressIntegrated = MyMoneroBridge_utils.ret_val_boolstring_to_bool(params.isXMRAddressIntegrated)
 			//
 			fn_args.success_fn(params);
@@ -160,9 +171,10 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 			fromWallet_didFailToInitialize: fn_args.fromWallet_didFailToInitialize,
 			fromWallet_didFailToBoot: fn_args.fromWallet_didFailToBoot,
 			fromWallet_needsImport: fn_args.fromWallet_needsImport,
+			requireAuthentication: fn_args.requireAuthentication,
+			//
 			sending_amount_double_string: fn_args.sending_amount_double_string,
 			hasPickedAContact: fn_args.hasPickedAContact,
-			contact_hasOpenAliasAddress: fn_args.contact_hasOpenAliasAddress,
 			resolvedAddress_fieldIsVisible: fn_args.resolvedAddress_fieldIsVisible,
 			manuallyEnteredPaymentID_fieldIsVisible: fn_args.manuallyEnteredPaymentID_fieldIsVisible,
 			resolvedPaymentID_fieldIsVisible: fn_args.resolvedPaymentID_fieldIsVisible,
@@ -180,6 +192,9 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		}
 		if (typeof fn_args.cached_OAResolved_address !== 'undefined' && fn_args.cached_OAResolved_address !== null && fn_args.cached_OAResolved_address !== "") {
 			args.cached_OAResolved_address = fn_args.cached_OAResolved_address;
+		}
+		if (typeof fn_args.contact_hasOpenAliasAddress !== 'undefined' && fn_args.contact_hasOpenAliasAddress !== null && fn_args.contact_hasOpenAliasAddress !== "") {
+			args.contact_hasOpenAliasAddress = fn_args.contact_hasOpenAliasAddress;
 		}
 		if (typeof fn_args.contact_address !== 'undefined' && fn_args.contact_address !== null && fn_args.contact_address !== "") {
 			args.contact_address = fn_args.contact_address;
