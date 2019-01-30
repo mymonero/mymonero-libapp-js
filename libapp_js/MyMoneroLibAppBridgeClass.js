@@ -132,7 +132,7 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		};
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__status_update"] = function(params)
 		{
-			params.code = parseInt(params.code)
+			params.code = parseInt(""+params.code)
 			//
 			fn_args.status_update_fn(params);
 		};
@@ -141,9 +141,9 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 			fn_args.error_fn(params);
 			self._cb_handlers__SendFundsFormSubmission = null // reset so we can enter process again
 		};
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__canceled"] = function(params)
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__canceled"] = function()
 		{
-			fn_args.canceled_fn(params);
+			fn_args.canceled_fn();
 			self._cb_handlers__SendFundsFormSubmission = null // reset so we can enter process again
 		};
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__authenticate"] = function()
@@ -154,9 +154,9 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 				self.Module.send_cb__authentication(JSON.stringify(payload))
 			});
 		};
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__willBeginSending"] = function(params)
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__willBeginSending"] = function()
 		{
-			fn_args.willBeginSending_fn(params);
+			fn_args.willBeginSending_fn();
 		};
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__success"] = function(params)
 		{
