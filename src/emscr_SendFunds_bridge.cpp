@@ -101,17 +101,17 @@ void emscr_SendFunds_bridge::send_app_handler__error_code(
 	optional<uint64_t> required_balance
 ) {
 	boost::property_tree::ptree root;
-	root.put("code", code);
+	root.put(ret_json_key__any__err_code(), code);
 	if (msg) {
-		root.put("msg", std::move(*msg));
+		root.put(ret_json_key__any__err_msg(), std::move(*msg));
 	}
-	if (createTx_errCode) {
+	if (createTx_errCode != boost::none) {
 		root.put("createTx_errCode", createTx_errCode);
 	}
-	if (spendable_balance) {
+	if (spendable_balance != boost::none) {
 		root.put(ret_json_key__send__spendable_balance(), std::move(RetVals_Transforms::str_from(*spendable_balance)));
 	}
-	if (required_balance) {
+	if (required_balance != boost::none) {
 		root.put(ret_json_key__send__required_balance(), std::move(RetVals_Transforms::str_from(*required_balance)));
 	}
 	send_app_handler__error_json(ret_json_from_root(root));

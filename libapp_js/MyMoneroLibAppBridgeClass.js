@@ -95,7 +95,7 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 	{
 		const self = this;
 		// register cb handler fns to wait for calls with thi task id
-		if (typeof self._cb_handlers__SendFundsFormSubmission != 'undefined' || self._cb_handlers__SendFundsFormSubmission) {
+		if (typeof self._cb_handlers__SendFundsFormSubmission !== 'undefined' && self._cb_handlers__SendFundsFormSubmission != null) {
 			throw "Expected self._cb_handlers__SendFundsFormSubmission - send-funds must already be in progress - this should be disallowed in the UI"
 		}
 		self._cb_handlers__SendFundsFormSubmission = {}
@@ -138,6 +138,10 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		};
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__error"] = function(params)
 		{
+			params.err_code = parseInt(""+params.err_code)
+			if (typeof params.createTx_errCode !== 'undefined' && params.createTx_errCode !== null) {
+				params.createTx_errCode = parseInt(""+params.createTx_errCode)
+			}
 			fn_args.error_fn(params);
 			self._cb_handlers__SendFundsFormSubmission = null // reset so we can enter process again
 		};
