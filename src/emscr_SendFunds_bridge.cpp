@@ -133,7 +133,7 @@ void send_app_handler__success(const Success_RetVals &success_retVals)
 	root.put("target_address", std::move(success_retVals.target_address));
 	root.put("final_total_wo_fee", std::move(RetVals_Transforms::str_from(success_retVals.final_total_wo_fee)));
 	root.put("isXMRAddressIntegrated", std::move(RetVals_Transforms::str_from(success_retVals.isXMRAddressIntegrated)));
-	if (success_retVals.final_payment_id) {
+	if (success_retVals.integratedAddressPIDForDisplay) {
 		root.put("integratedAddressPIDForDisplay", std::move(*(success_retVals.integratedAddressPIDForDisplay)));
 	}
 	//
