@@ -138,7 +138,9 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		};
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__error"] = function(params)
 		{
-			params.err_code = parseInt(""+params.err_code)
+			if (typeof params.err_code !== 'undefined' && params.err_code !== null) { // this can be nil in case of a server error
+				params.err_code = parseInt(""+params.err_code)
+			}
 			if (typeof params.createTx_errCode !== 'undefined' && params.createTx_errCode !== null) {
 				params.createTx_errCode = parseInt(""+params.createTx_errCode)
 			}
