@@ -98,45 +98,7 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 		if (typeof self._cb_handlers__SendFundsFormSubmission !== 'undefined' && self._cb_handlers__SendFundsFormSubmission != null) {
 			throw "Expected self._cb_handlers__SendFundsFormSubmission - send-funds must already be in progress - this should be disallowed in the UI"
 		}
-		self._cb_handlers__SendFundsFormSubmission = {}
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__get_unspent_outs"] = function(req_params)
-		{
-			// convert bridge-strings to native primitive types
-			req_params.use_dust = MyMoneroBridge_utils.ret_val_boolstring_to_bool(req_params.use_dust)
-			req_params.mixin = parseInt(req_params.mixin)
-			//
-			fn_args.get_unspent_outs_fn(req_params, function(err_msg, res)
-			{
-				const args = self.__new_cb_args_with_no_task_id(err_msg, res);
-				self.Module.send_cb_I__got_unspent_outs(JSON.stringify(args))
-			});
-		};
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__get_random_outs"] = function(req_params)
-		{
-			// convert bridge-strings to native primitive types
-			req_params.count = parseInt(req_params.count)
-			//
-			fn_args.get_random_outs_fn(req_params, function(err_msg, res)
-			{
-				const args = self.__new_cb_args_with_no_task_id(err_msg, res);
-				self.Module.send_cb_II__got_random_outs(JSON.stringify(args))
-			});
-		};
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__submit_raw_tx"] = function(req_params)
-		{
-			fn_args.submit_raw_tx_fn(req_params, function(err_msg, res)
-			{
-				const args = self.__new_cb_args_with_no_task_id(err_msg, res);
-				self.Module.send_cb_III__submitted_tx(JSON.stringify(args))
-			})
-		};
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__status_update"] = function(params)
-		{
-			params.code = parseInt(""+params.code)
-			//
-			fn_args.status_update_fn(params);
-		};
-		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__error"] = function(params)
+		const errHandler_fn = function(params)
 		{
 			if (typeof params.err_code !== 'undefined' && params.err_code !== null) { // this can be nil in case of a server error
 				params.err_code = parseInt(""+params.err_code)
@@ -147,6 +109,75 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 			fn_args.error_fn(params);
 			self._cb_handlers__SendFundsFormSubmission = null // reset so we can enter process again
 		};
+		self._cb_handlers__SendFundsFormSubmission = {}
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__get_unspent_outs"] = function(req_params)
+		{
+			// convert bridge-strings to native primitive types
+			req_params.use_dust = MyMoneroBridge_utils.ret_val_boolstring_to_bool(req_params.use_dust)
+			req_params.mixin = parseInt(req_params.mixin)
+			//
+			fn_args.get_unspent_outs_fn(req_params, function(err_msg, res)
+			{
+				const args = self.__new_cb_args_with_no_task_id(err_msg, res);
+				const ret_string = self.Module.send_cb_I__got_unspent_outs(JSON.stringify(args))
+				const ret = JSON.parse(ret_string);
+				if (typeof ret.err_msg !== 'undefined' && ret.err_msg) { // this is actually an exception
+					errHandler_fn({ 
+						err_msg: ret.err_msg 
+					});
+					// ^-- this will clean up cb handlers too
+					return;
+				} else {
+					// TODO: assert Object.keys(ret).length == 0
+				}
+			});
+		};
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__get_random_outs"] = function(req_params)
+		{
+			// convert bridge-strings to native primitive types
+			req_params.count = parseInt(req_params.count)
+			//
+			fn_args.get_random_outs_fn(req_params, function(err_msg, res)
+			{
+				const args = self.__new_cb_args_with_no_task_id(err_msg, res);
+				const ret_string = self.Module.send_cb_II__got_random_outs(JSON.stringify(args))
+				const ret = JSON.parse(ret_string);
+				if (typeof ret.err_msg !== 'undefined' && ret.err_msg) { // this is actually an exception
+					errHandler_fn({ 
+						err_msg: ret.err_msg 
+					});
+					// ^-- this will clean up cb handlers too
+					return;
+				} else {
+					// TODO: assert Object.keys(ret).length == 0
+				}
+			});
+		};
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__submit_raw_tx"] = function(req_params)
+		{
+			fn_args.submit_raw_tx_fn(req_params, function(err_msg, res)
+			{
+				const args = self.__new_cb_args_with_no_task_id(err_msg, res);
+				const ret_string = self.Module.send_cb_III__submitted_tx(JSON.stringify(args))
+				const ret = JSON.parse(ret_string);
+				if (typeof ret.err_msg !== 'undefined' && ret.err_msg) { // this is actually an exception
+					errHandler_fn({ 
+						err_msg: ret.err_msg 
+					});
+					// ^-- this will clean up cb handlers too
+					return;
+				} else {
+					// TODO: assert Object.keys(ret).length == 0
+				}
+			})
+		};
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__status_update"] = function(params)
+		{
+			params.code = parseInt(""+params.code)
+			//
+			fn_args.status_update_fn(params);
+		};
+		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__error"] = errHandler_fn;
 		self._cb_handlers__SendFundsFormSubmission["fromCpp__SendFundsFormSubmission__canceled"] = function()
 		{
 			fn_args.canceled_fn();
@@ -218,7 +249,18 @@ class MyMoneroLibAppBridgeClass extends MyMoneroCoreBridgeEssentialsClass
 			args.resolvedPaymentID = fn_args.resolvedPaymentID;
 		}
 		const args_str = JSON.stringify(args, null, '')
-		this.Module.send_funds(args_str);
+		const ret_string = this.Module.send_funds(args_str);
+		const ret = JSON.parse(ret_string);
+		if (typeof ret.err_msg !== 'undefined' && ret.err_msg) { // this is actually an exception
+			errHandler_fn({ 
+				err_msg: ret.err_msg 
+			});
+			// ^-- this will clean up cb handlers too
+			return;
+		} else {
+			// TODO: assert Object.keys(ret).length == 0
+		}
+
 	}
 }
 module.exports = MyMoneroLibAppBridgeClass;

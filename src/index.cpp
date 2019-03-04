@@ -31,9 +31,166 @@
 //
 #include <stdio.h>
 #include <emscripten/bind.h>
+#include <emscripten.h>
 //
 #include "serial_bridge_index.hpp"
+#include "serial_bridge_utils.hpp"
 #include "emscr_SendFunds_bridge.hpp"
+//
+string decode_address(const string &args_string)
+{
+    try {
+        return serial_bridge::decode_address(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string is_subaddress(const string &args_string)
+{
+    try {
+        return serial_bridge::is_subaddress(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string is_integrated_address(const string &args_string)
+{
+    try {
+        return serial_bridge::is_integrated_address(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+//
+string new_integrated_address(const string &args_string)
+{
+    try {
+        return serial_bridge::new_integrated_address(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string new_payment_id(const string &args_string)
+{
+    try {
+        return serial_bridge::new_payment_id(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+//
+string newly_created_wallet(const string &args_string)
+{
+    try {
+        return serial_bridge::newly_created_wallet(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string are_equal_mnemonics(const string &args_string)
+{
+    try {
+        return serial_bridge::are_equal_mnemonics(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string address_and_keys_from_seed(const string &args_string)
+{
+    try {
+        return serial_bridge::address_and_keys_from_seed(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string mnemonic_from_seed(const string &args_string)
+{
+    try {
+        return serial_bridge::mnemonic_from_seed(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string seed_and_keys_from_mnemonic(const string &args_string)
+{
+    try {
+        return serial_bridge::seed_and_keys_from_mnemonic(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string validate_components_for_login(const string &args_string)
+{
+    try {
+        return serial_bridge::validate_components_for_login(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+//
+string estimated_tx_network_fee(const string &args_string)
+{
+    try {
+        return serial_bridge::estimated_tx_network_fee(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+//
+string generate_key_image(const string &args_string)
+{
+    try {
+        return serial_bridge::generate_key_image(args_string);
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+//
+string send_funds(const string &args_string)
+{
+    try {
+        emscr_SendFunds_bridge::send_funds(args_string);
+        return string("{}");
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string send_cb__authentication(const string &args_string)
+{
+    try {
+        emscr_SendFunds_bridge::send_cb__authentication(args_string);
+        return string("{}");
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string send_cb_I__got_unspent_outs(const string &args_string)
+{
+    try {
+        emscr_SendFunds_bridge::send_cb_I__got_unspent_outs(args_string);
+        return string("{}");
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string send_cb_II__got_random_outs(const string &args_string)
+{
+    try {
+        emscr_SendFunds_bridge::send_cb_II__got_random_outs(args_string);
+        return string("{}");
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
+string send_cb_III__submitted_tx(const string &args_string)
+{
+    try {
+        emscr_SendFunds_bridge::send_cb_III__submitted_tx(args_string);
+        return string("{}");
+    } catch (std::exception &e) {
+        return serial_bridge_utils::error_ret_json_from_message(e.what());
+    }
+}
 //
 EMSCRIPTEN_BINDINGS(my_module)
 { // C++ -> JS 
@@ -42,24 +199,24 @@ EMSCRIPTEN_BINDINGS(my_module)
     // emscripten::function("send_cb_II__got_random_outs", &emscr_async_bridge::send_cb_II__got_random_outs);
     // emscripten::function("send_cb_III__submitted_tx", &emscr_async_bridge::send_cb_III__submitted_tx);
     //
-    emscripten::function("decode_address", &serial_bridge::decode_address);
-    emscripten::function("is_subaddress", &serial_bridge::is_subaddress);
-    emscripten::function("is_integrated_address", &serial_bridge::is_integrated_address);
+    emscripten::function("decode_address", &decode_address);
+    emscripten::function("is_subaddress", &is_subaddress);
+    emscripten::function("is_integrated_address", &is_integrated_address);
     //
-    emscripten::function("new_integrated_address", &serial_bridge::new_integrated_address);
-    emscripten::function("new_payment_id", &serial_bridge::new_payment_id);
+    emscripten::function("new_integrated_address", &new_integrated_address);
+    emscripten::function("new_payment_id", &new_payment_id);
     //
-    emscripten::function("newly_created_wallet", &serial_bridge::newly_created_wallet);
-    emscripten::function("are_equal_mnemonics", &serial_bridge::are_equal_mnemonics);
-    emscripten::function("mnemonic_from_seed", &serial_bridge::mnemonic_from_seed);
-    emscripten::function("seed_and_keys_from_mnemonic", &serial_bridge::seed_and_keys_from_mnemonic);
-    emscripten::function("validate_components_for_login", &serial_bridge::validate_components_for_login);
-    emscripten::function("address_and_keys_from_seed", &serial_bridge::address_and_keys_from_seed);
+    emscripten::function("newly_created_wallet", &newly_created_wallet);
+    emscripten::function("are_equal_mnemonics", &are_equal_mnemonics);
+    emscripten::function("mnemonic_from_seed", &mnemonic_from_seed);
+    emscripten::function("seed_and_keys_from_mnemonic", &seed_and_keys_from_mnemonic);
+    emscripten::function("validate_components_for_login", &validate_components_for_login);
+    emscripten::function("address_and_keys_from_seed", &address_and_keys_from_seed);
     //
-    emscripten::function("estimated_tx_network_fee", &serial_bridge::estimated_tx_network_fee);
+    emscripten::function("estimated_tx_network_fee", &estimated_tx_network_fee);
     // emscripten::function("estimate_rct_tx_size", &serial_bridge::estimate_rct_tx_size);
     //
-    emscripten::function("generate_key_image", &serial_bridge::generate_key_image);
+    emscripten::function("generate_key_image", &generate_key_image);
     // emscripten::function("generate_key_derivation", &serial_bridge::generate_key_derivation);
     // emscripten::function("derive_public_key", &serial_bridge::derive_public_key);
     // emscripten::function("derive_subaddress_public_key", &serial_bridge::derive_subaddress_public_key);
@@ -69,13 +226,11 @@ EMSCRIPTEN_BINDINGS(my_module)
     // emscripten::function("encrypt_payment_id", &serial_bridge::encrypt_payment_id);
     //
     //
-    emscripten::function("send_funds", &emscr_SendFunds_bridge::send_funds);
-    emscripten::function("send_cb__authentication", &emscr_SendFunds_bridge::send_cb__authentication);
-    emscripten::function("send_cb_I__got_unspent_outs", &emscr_SendFunds_bridge::send_cb_I__got_unspent_outs);
-    emscripten::function("send_cb_II__got_random_outs", &emscr_SendFunds_bridge::send_cb_II__got_random_outs);
-    emscripten::function("send_cb_III__submitted_tx", &emscr_SendFunds_bridge::send_cb_III__submitted_tx);
-
-    
+    emscripten::function("send_funds", &send_funds);
+    emscripten::function("send_cb__authentication", &send_cb__authentication);
+    emscripten::function("send_cb_I__got_unspent_outs", &send_cb_I__got_unspent_outs);
+    emscripten::function("send_cb_II__got_random_outs", &send_cb_II__got_random_outs);
+    emscripten::function("send_cb_III__submitted_tx", &send_cb_III__submitted_tx);    
 }
 extern "C"
 { // C -> JS

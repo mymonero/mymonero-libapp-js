@@ -267,8 +267,7 @@ describe("sendingFunds tests", function()
 			},
 			error_fn: function(params)
 			{
-				console.log("Error occurred.... ", params)
-				throw new Error("SendFunds err:" + params.err_msg) 
+				console.error("Error occurred.... ", params)
 				// TODO: how to assert err msg not nil? didn't work
 				assert.equal(true, false)
 			},
