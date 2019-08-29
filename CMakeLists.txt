@@ -170,9 +170,9 @@ set(
 -Os \
 --separate-asm \
 -s AGGRESSIVE_VARIABLE_ELIMINATION=1 \
--s \"BINARYEN_METHOD='asmjs'\" \
 -s ALLOW_MEMORY_GROWTH=0 \
 --memory-init-file 0 \
+-s SEPARATE_ASM_MODULE_NAME=asmjs \
 "
     # --memory-init-file is explicitly set to 0 because optimization level is Oz, and some clients like React Native have trouble loading .mem files
     # .... it also didn't seem to have a giant impact on perf. but this should be tested again
@@ -184,7 +184,6 @@ set(
     "${EMCC_LINKER_FLAGS___BASE} \
 -s WASM=1 \
 -Oz \
--s \"BINARYEN_METHOD='native-wasm'\" \
 -s ALLOW_MEMORY_GROWTH=1 \
 --post-js ${CMAKE_CURRENT_LIST_DIR}/src/module-post.js \
 "
