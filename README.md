@@ -1,14 +1,6 @@
 ## General dependencies
 The MyMonero libapp build requires you to have installed docker. Docker should be in your system's evironment path.
 
-Please follow the installation instructions 
-
-### Linux
-Python, CMake, and Java are not provided by emsdk. The user is expected to install these beforehand with the system package manager:
-
-### How to install dependencies for Debian and Ubuntu:
-`sudo apt-get install cmake default-jre`
-
 ## Building libapp
 
 1. Clone the repo `git clone https://github.com/mymonero/mymonero--js.git`
