@@ -3,7 +3,7 @@ The MyMonero libapp build requires you to have installed docker. Docker should b
 
 ## Building libapp
 
-1. Clone the repo `git clone https://github.com/mymonero/mymonero--js.git`
+1. Clone the repo `git clone https://github.com/mymonero/mymonero-libapp-js.git`
 2. `cd mymonero-libapp-js`
 3. Run `bin/update_submodules`
 4. Download Boost libraries
