@@ -147,13 +147,13 @@ set (
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 -s ASSERTIONS=2 \
 -s EXIT_RUNTIME=0 \
--s \"BINARYEN_TRAP_MODE='clamp'\" \
 -s PRECISE_F32=1 \
 -s DISABLE_EXCEPTION_CATCHING=0 \
 -s EXCEPTION_DEBUG=1 \
 -s DEMANGLE_SUPPORT=1 \
 -s NO_DYNAMIC_EXECUTION=1 \
 -s NODEJS_CATCH_EXIT=0 \
+-s EXPORT_ES6=1 \
 -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\"]' \
 "
     # • Disabling exception catching does not introduce silent failures 
@@ -164,28 +164,12 @@ set (
     # -g \
 )
 set(
-    EMCC_LINKER_FLAGS__ASMJS
-    "${EMCC_LINKER_FLAGS___BASE} \
--s WASM=0 \
--Os \
---separate-asm \
--s AGGRESSIVE_VARIABLE_ELIMINATION=1 \
--s ALLOW_MEMORY_GROWTH=0 \
---memory-init-file 0 \
--s SEPARATE_ASM_MODULE_NAME=asmjs \
-"
-    # --memory-init-file is explicitly set to 0 because optimization level is Oz, and some clients like React Native have trouble loading .mem files
-    # .... it also didn't seem to have a giant impact on perf. but this should be tested again
-    #
-    # --closure 1 \
-)
-set(
     EMCC_LINKER_FLAGS__WASM
     "${EMCC_LINKER_FLAGS___BASE} \
 -s WASM=1 \
 -Oz \
 -s ALLOW_MEMORY_GROWTH=1 \
---post-js ${CMAKE_CURRENT_LIST_DIR}/src/module-post.js \
+#--post-js ${CMAKE_CURRENT_LIST_DIR}/src/module-post.js \
 "
     # -g \
 )
@@ -194,16 +178,12 @@ set(
 #
 #
 message(STATUS "EMCC_LINKER_FLAGS__WASM ${EMCC_LINKER_FLAGS__WASM}")
-message(STATUS "EMCC_LINKER_FLAGS__ASMJS ${EMCC_LINKER_FLAGS__ASMJS}")
 #
 add_executable(MyMoneroLibAppCpp_WASM ${SRC_FILES})
-add_executable(MyMoneroLibAppCpp_ASMJS ${SRC_FILES})
 #
 set_target_properties(MyMoneroLibAppCpp_WASM PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS__WASM}")
-set_target_properties(MyMoneroLibAppCpp_ASMJS PROPERTIES LINK_FLAGS "${EMCC_LINKER_FLAGS__ASMJS}")
 #
 # set_target_properties(MyMoneroLibAppCpp_WASM PROPERTIES SUFFIX ".html")
-# set_target_properties(MyMoneroLibAppCpp_ASMJS PROPERTIES SUFFIX ".html")
 #
 # boost_atomic
 # boost_date_time
@@ -218,15 +198,6 @@ set_target_properties(MyMoneroLibAppCpp_ASMJS PROPERTIES LINK_FLAGS "${EMCC_LINK
 #
 target_link_libraries(
     MyMoneroLibAppCpp_WASM
-    #
-    boost_chrono
-    boost_system
-    boost_thread
-    #
-    ${log-lib}
-)
-target_link_libraries(
-    MyMoneroLibAppCpp_ASMJS
     #
     boost_chrono
     boost_system
