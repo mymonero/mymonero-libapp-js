@@ -41,9 +41,7 @@
     "verbose": true,
     "coveragePathIgnorePatterns": [
       "node_modules",
-      "monero_utils/MyMoneroLibAppCpp_WASM.js",
-      "monero_utils/MyMoneroLibAppCpp_ASMJS.js",
-      "monero_utils/MyMoneroLibAppCpp_ASMJS.asm.js"
+      "monero_utils/MyMoneroLibAppCpp_WASM.js"
     ]
   }
 }
