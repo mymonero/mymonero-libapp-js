@@ -106,6 +106,7 @@ set(
     ${MONERO_SRC}/ringct/rctCryptoOps.c
     ${MONERO_SRC}/ringct/rctSigs.cpp
     ${MONERO_SRC}/ringct/bulletproofs.cc
+    ${MONERO_SRC}/ringct/bulletproofs_plus.cc
     ${MONERO_SRC}/ringct/multiexp.cc
     ${MONERO_SRC}/mnemonics/electrum-words.cpp
     ${MONERO_SRC}/vtlogger/logger.cpp
@@ -130,6 +131,7 @@ set (
 -s NO_DISABLE_EXCEPTION_CATCHING \
 -s NODEJS_CATCH_EXIT=1 \
 -s NODEJS_CATCH_REJECTION=0 \
+-s EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\"]' \
 --post-js ${CMAKE_CURRENT_LIST_DIR}/src/module-post.js \
 ")
 
