@@ -107,6 +107,7 @@ set(
     ${MONERO_SRC}/ringct/rctSigs.cpp
     ${MONERO_SRC}/ringct/bulletproofs.cc
     ${MONERO_SRC}/ringct/bulletproofs_plus.cc
+    ${MONERO_SRC}/ringct/bulletproofs_plus.h
     ${MONERO_SRC}/ringct/multiexp.cc
     ${MONERO_SRC}/mnemonics/electrum-words.cpp
     ${MONERO_SRC}/vtlogger/logger.cpp
@@ -121,7 +122,7 @@ set (
 -std=c++11 \
 -flto \
 --bind \
--s STRICT=1 \
+-s STRICT=0 \
 -s MODULARIZE=1 \
 -s 'EXPORT_NAME=\"MyMoneroLibAppCpp\"' \
 -s WASM=1 \
@@ -131,7 +132,13 @@ set (
 -s NO_DISABLE_EXCEPTION_CATCHING \
 -s NODEJS_CATCH_EXIT=1 \
 -s NODEJS_CATCH_REJECTION=0 \
--s EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\"]' \
+-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
+-s LLD_REPORT_UNDEFINED \
+-s RESERVED_FUNCTION_POINTERS=5 \
+-O3 \
+-s EXPORTED_RUNTIME_METHODS='[\"UTF8ToString\",\"stringToUTF8\",\"lengthBytesUTF8\",\"intArrayToString\",\"getTempRet0\",\"addFunction\"]' \
+--source-map-base ${CMAKE_CURRENT_LIST_DIR}/sourcemap \
+--memory-init-file 1 \
 --post-js ${CMAKE_CURRENT_LIST_DIR}/src/module-post.js \
 ")
 
