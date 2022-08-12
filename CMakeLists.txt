@@ -67,9 +67,13 @@ set(
     ${MYMONERO_LIBAPP_CPP_SRC}/SendFunds/Controllers/SendFundsFormSubmissionController.hpp
     ${MYMONERO_LIBAPP_CPP_SRC}/SendFunds/Controllers/SendFundsFormSubmissionController.cpp
     #
-    ${MONERO_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
     ${MONERO_SRC}/cryptonote_basic/account.cpp
+    ${MONERO_SRC}/cryptonote_basic/cryptonote_basic.h
+    ${MONERO_SRC}/cryptonote_basic/cryptonote_basic_impl.h
+    ${MONERO_SRC}/cryptonote_basic/cryptonote_basic_impl.cpp
+    ${MONERO_SRC}/cryptonote_basic/cryptonote_format_utils.h
     ${MONERO_SRC}/cryptonote_basic/cryptonote_format_utils.cpp
+    ${MONERO_SRC}/cryptonote_basic/cryptonote_format_utils_basic.cpp
     ${MONERO_SRC}/crypto/crypto.cpp
     ${MONERO_SRC}/crypto/hash.c
     ${MONERO_SRC}/crypto/slow-hash-dummied.cpp
@@ -132,7 +136,7 @@ set (
 -s NO_DISABLE_EXCEPTION_CATCHING \
 -s NODEJS_CATCH_EXIT=1 \
 -s NODEJS_CATCH_REJECTION=0 \
--s ERROR_ON_UNDEFINED_SYMBOLS=0 \
+-s ERROR_ON_UNDEFINED_SYMBOLS=1 \
 -s LLD_REPORT_UNDEFINED \
 -s RESERVED_FUNCTION_POINTERS=5 \
 -O3 \
