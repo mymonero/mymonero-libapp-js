@@ -186,6 +186,7 @@ describe("sendingFunds tests", function()
 		const sec_spendKey_string = "4e6d43cd03812b803c6f3206689f5fcc910005fc7e91d50d79b0776dbefcd803";
 		const pub_spendKey_string = "3eb884d3440d71326e27cc07a861b873e72abd339feb654660c36a008a0028b3";
 		const payment_id = null; 
+	        const destinations = [{to_address: target_address, send_amount: entered_amount}]
 		var bridge_instance;
 		try {
 			bridge_instance = await require('../libapp_js/MyMoneroLibAppBridge')({ asmjs: undefined/*allow it to detect*/ });
@@ -200,7 +201,7 @@ describe("sendingFunds tests", function()
 			//
 			requireAuthentication: true,
 			//
-			sending_amount_double_string: entered_amount,
+			destinations: destinations,
 			hasPickedAContact: false,
 			resolvedAddress_fieldIsVisible: false,
 			manuallyEnteredPaymentID_fieldIsVisible: true,

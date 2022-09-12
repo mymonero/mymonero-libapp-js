@@ -130,7 +130,30 @@ void send_app_handler__success(const Success_RetVals &success_retVals)
 	root.put(ret_json_key__send__tx_hash(), std::move(success_retVals.tx_hash_string));
 	root.put(ret_json_key__send__tx_key(), std::move(success_retVals.tx_key_string));
 	root.put(ret_json_key__send__tx_pub_key(), std::move(success_retVals.tx_pub_key_string));
-	root.put("target_address", std::move(success_retVals.target_address));
+	
+	string target_address_str;
+	size_t nTargAddrs = success_retVals.target_addresses.size();
+        for (size_t i = 0; i < nTargAddrs; ++i){
+		if (nTargAddrs == 1) {
+			target_address_str += success_retVals.target_addresses[i];
+		}
+		else {
+			if (i == 0) {
+				target_address_str += "[";
+			}
+
+			target_address_str += success_retVals.target_addresses[i];
+
+			if (i < nTargAddrs - 1) {
+				target_address_str += ", ";
+			}
+			else {
+				target_address_str += "]";
+			}
+		}
+	}
+
+	root.put("target_address", target_address_str);
 	root.put("final_total_wo_fee", std::move(RetVals_Transforms::str_from(success_retVals.final_total_wo_fee)));
 	root.put("isXMRAddressIntegrated", std::move(RetVals_Transforms::str_from(success_retVals.isXMRAddressIntegrated)));
 	if (success_retVals.integratedAddressPIDForDisplay) {
@@ -159,6 +182,17 @@ void emscr_SendFunds_bridge::send_funds(const string &args_string)
 		send_app_handler__error_msg(error_ret_json_from_message("Invalid JSON"));
 		return;
 	}
+
+	const auto& destinations = json_root.get_child("destinations");
+        vector<string> dest_addrs, dest_amounts;
+        dest_addrs.reserve(destinations.size());
+        dest_amounts.reserve(destinations.size());
+
+        for (const auto& dest : destinations) {
+                dest_addrs.emplace_back(dest.second.get<string>("to_address"));
+                dest_amounts.emplace_back(dest.second.get<string>("send_amount"));
+        }
+
 	Parameters parameters{
 		json_root.get<bool>("fromWallet_didFailToInitialize"),
 		json_root.get<bool>("fromWallet_didFailToBoot"),
@@ -166,7 +200,7 @@ void emscr_SendFunds_bridge::send_funds(const string &args_string)
 		//
 		json_root.get<bool>("requireAuthentication"),
 		//
-		json_root.get<string>("sending_amount_double_string"),
+		std::move(dest_amounts),
 		json_root.get<bool>("is_sweeping"),
 		(uint32_t)stoul(json_root.get<string>("priority")),
 		//
@@ -182,7 +216,7 @@ void emscr_SendFunds_bridge::send_funds(const string &args_string)
 		json_root.get<string>("sec_spendKey_string"),
 		json_root.get<string>("pub_spendKey_string"),
 		//
-		json_root.get_optional<string>("enteredAddressValue"),
+		std::move(dest_addrs),
 		//
 		json_root.get_optional<string>("resolvedAddress"),
 		json_root.get<bool>("resolvedAddress_fieldIsVisible"),
