@@ -33,7 +33,7 @@
   "homepage": "https://github.com/mymonero/mymonero-libapp-js#readme",
   "dependencies": {},
   "devDependencies": {
-    "mocha": "5.2.0"
+    "mocha": "10.2.0"
   },
   "jest": {
     "testEnvironment": "node",
